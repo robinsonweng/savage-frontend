@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, watch } from "vue";
 
 let animeList = ref(null);
+let info = ref(null);
 const amount = 20;
 const getData = async () => {
   animeList.value = "";
@@ -11,6 +12,16 @@ const getData = async () => {
 };
 
 getData();
+
+watch(info, () => {
+  for (let i = 0; i <= info.value.length; i++) {
+    const scrollbar = info.value[i].scrollHeight;
+    const offset = info.value[i].offsetHeight;
+    if (scrollbar === offset) {
+      info.value[i].classList.remove("synopsis-hover");
+    }
+  }
+});
 </script>
 
 <template>
@@ -44,7 +55,7 @@ getData();
           <div class="image">
             <img :src="item.cover_img" />
           </div>
-          <div class="synopsis">
+          <div class="synopsis synopsis-hover" ref="info">
             <p>{{ item.description }}</p>
           </div>
         </div>
@@ -109,18 +120,19 @@ getData();
 
 .synopsis {
   padding: 0.2rem;
-  margin-right: 1.5rem;
+  padding-right: 20px;
   overflow: hidden;
 }
 
 .synopsis > p {
   max-height: 140px;
   word-break: break-all;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
-.synopsis > p:hover {
-  overflow: auto;
+.synopsis-hover:hover {
+  padding-right: 5px;
+  overflow-y: auto;
 }
 
 .grid-footer {
