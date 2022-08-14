@@ -7,7 +7,7 @@ const amount = 20;
 const getData = async () => {
   animeList.value = "";
   const data = await fetch(`
-    http://localhost/api/dev/series/info?recent=false`);
+    http://savagetime.mooo.com/api/dev/series/info?recent=false`);
   animeList.value = await data.json();
 };
 
