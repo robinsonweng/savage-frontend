@@ -9,7 +9,7 @@ const seriesData = ref(message);
 const video_id = seriesData.value["message"][route.params.videoId - 1].uuid;
 
 const startPlayer = (ele, id) => {
-  let source = `http://savagetime.mooo.com:5000/hls/${id}.mp4/index.m3u8?md5=id2tPFIcl59pAG1kcorMig`;
+  let source = `https://savagetime.mooo.com:5000/hls/${id}.mp4/index.m3u8?md5=id2tPFIcl59pAG1kcorMig`;
   console.log(id);
   if (Hls.isSupported()) {
     const hls = new Hls();
