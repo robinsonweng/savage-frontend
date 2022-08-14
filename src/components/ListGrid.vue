@@ -1,9 +1,10 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 
-let animeList = ref(null);
-let info = ref(null);
+let animeList = ref({});
+let info = ref({});
 const amount = 20;
+
 const getData = async () => {
   animeList.value = "";
   const data = await fetch(`
@@ -11,9 +12,8 @@ const getData = async () => {
   animeList.value = await data.json();
 };
 
-getData();
-
-watch(info, () => {
+watch(info.value, () => {
+  if (!info.value) return;
   for (let i = 0; i <= info.value.length; i++) {
     const scrollbar = info.value[i].scrollHeight;
     const offset = info.value[i].offsetHeight;
@@ -21,6 +21,10 @@ watch(info, () => {
       info.value[i].classList.remove("synopsis-hover");
     }
   }
+});
+
+onMounted(() => {
+  getData();
 });
 </script>
 
@@ -48,7 +52,7 @@ watch(info, () => {
           </div>
         </div>
         <div class="video-datetime card-text">
-          <p>{{ item.pub_year}}{{ item.season }}</p>
+          <p>{{ item.pub_year }}/{{ item.pub_month }}</p>
         </div>
 
         <div class="img-wrapper">
