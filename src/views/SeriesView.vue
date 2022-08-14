@@ -9,7 +9,7 @@ let seriesData = ref(null);
 const getSeries = async () => {
   seriesData.value = "";
   let data = await fetch(
-    `https://seriestime.mooo.com/api/dev/series/info/${router.params.seriesId}/episodes`
+    `https://savagetime.mooo.com/api/dev/series/info/${router.params.seriesId}/episodes`
   );
   seriesData.value = await data.json();
 };
