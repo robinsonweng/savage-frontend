@@ -4,7 +4,11 @@ import { useRoute, RouterLink } from "vue-router";
 import VideoPlayer from "../components/VideoPlayer.vue";
 
 const router = useRoute();
-let seriesData = ref(null);
+let seriesData = ref();
+
+const sortEpisode = (a, b) => {
+  return a.episode - b.episode;
+};
 
 const getSeries = async () => {
   seriesData.value = "";
@@ -12,12 +16,12 @@ const getSeries = async () => {
     `https://savagetime.mooo.com/api/dev/series/info/${router.params.seriesId}/episodes`
   );
   seriesData.value = await data.json();
+  seriesData.value = seriesData.value.sort(sortEpisode);
 };
 
 let seriesName = computed(() => {
-  const videoId = router.params.videoId;
-  const video = seriesData.value[videoId];
-  return video ? video.series_name : "";
+  if (!seriesData.value) return "";
+  return seriesData.value[0].series_name;
 });
 
 getSeries();
@@ -28,7 +32,7 @@ getSeries();
     <main>
       <section class="player">
         <!-- send episode -->
-        <VideoPlayer :message="seriesData" />
+        <VideoPlayer v-if="seriesData" :message="seriesData" />
       </section>
       <div class="player-description player-title">
         <h3>{{ seriesName }}[{{ router.params.videoId }}]</h3>
@@ -37,9 +41,9 @@ getSeries();
             <RouterLink
               :to="{
                 name: 'video',
-                params: { seriesId: router.params.seriesId, videoId: index + 1 },
+                params: { seriesId: router.params.seriesId, videoId: item.episode },
               }">
-              {{ index + 1 }}
+              {{ item.episode }}
             </RouterLink>
           </div>
         </div>
