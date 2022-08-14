@@ -11,7 +11,8 @@ const router = createRouter({
     {
       path: "/series/:seriesId",
       name: "series",
-      component: () => import("../views/SeriesView.vue"),
+      //component: () => import("../views/SeriesView.vue"),
+      component: null,
       redirect: (to) => {
         const videoid = 1;
         return { path: "video/", params: { videoId: videoid } };
@@ -20,8 +21,7 @@ const router = createRouter({
         {
           path: "video/:videoId",
           name: "video",
-          component: null,
-          //component: () => import("../views/PlayerView.vue"),
+          component: () => import("../views/SeriesView.vue"),
         },
       ],
     },
