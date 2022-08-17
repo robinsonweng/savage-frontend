@@ -4,25 +4,18 @@ import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import Hls from "hls.js";
 
 const route = useRoute();
-const series = defineProps(["message"]);
-const seriesInfo = ref(series.message);
-const streamUrl = ref(null);
-
-const getVideoInfo = (e) => {
-  if (!seriesInfo.value) return "";
-  return seriesInfo.value.filter((t) => t.episode == e)[0].uuid;
-};
+const streamUrl = ref();
 
 const getStreamUrl = async (id) => {
   streamUrl.value = "";
-  let url = `https://savagetime.mooo.com/api/dev/video/${id}/stream`;
-  const location = await fetch(url)
-    .then((response) => response.json());
-  return location;
+  let url = `https://savagetime.mooo.com/api/dev/video/${}/stream`;
+  return await fetch(url)
+    .then((response) => response.json())
+    .then((data) => data.url);
 };
 
 const startPlayer = (ele, source) => {
-  let url = `https://savagetime.stream.mooo.com${source.url}`;
+  let url = `https://savagetime.stream.mooo.com${source}`;
   if (Hls.isSupported()) {
     const hls = new Hls();
     hls.attachMedia(ele);
@@ -35,13 +28,11 @@ const startPlayer = (ele, source) => {
 const player = ref();
 
 onMounted(async () => {
-  const vId = getVideoInfo(route.params.videoId);
-  startPlayer(player.value, await getStreamUrl(vId));
+  startPlayer(player.value, await getStreamUrl(route.params.videoId));
 });
 
 onBeforeRouteUpdate(async (to, from) => {
-  const vId = getVideoInfo(to.params.videoId);
-  startPlayer(player.value, await getStreamUrl(vId));
+  startPlayer(player.value, await getStreamUrl(to.params.videoId));
 });
 </script>
 
