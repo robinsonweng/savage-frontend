@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, onMounted, defineProps } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import Hls from "hls.js";
 
@@ -8,7 +8,7 @@ const streamUrl = ref();
 
 const getStreamUrl = async (id) => {
   streamUrl.value = "";
-  let url = `https://savagetime.mooo.com/api/dev/video/${}/stream`;
+  let url = `https://savagetime.mooo.com/api/dev/video/${id}/stream`;
   return await fetch(url)
     .then((response) => response.json())
     .then((data) => data.url);
