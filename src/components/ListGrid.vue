@@ -47,7 +47,14 @@ onMounted(() => {
         <div class="title">
           <div class="video-title card-text">
             <h3>
-              <RouterLink :to="{ name : 'video', params: { seriesId: item.uuid, videoId: '1' } }">{{ item.name }}</RouterLink>
+              <RouterLink
+                :to="{
+                  name: 'series',
+                  params: { seriesId: item.uuid, title: item.name },
+                }"
+              >
+                {{ item.name }}
+              </RouterLink>
             </h3>
           </div>
         </div>
