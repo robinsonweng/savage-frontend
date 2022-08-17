@@ -7,21 +7,22 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: () => import("../views/HomeView.vue"),
+      meta: { title: "Savagetime" },
     },
     {
       path: "/series/:seriesId",
       name: "series",
-      //component: () => import("../views/SeriesView.vue"),
-      component: null,
-      redirect: (to) => {
-        const videoid = 1;
-        return { path: "video/", params: { videoId: videoid } };
-      },
+      component: () => import("../views/SeriesView.vue"),
+      meta: { title: "Redirecting" }
+    },
+    {
+      path: "/video/:videoId",
+      component: () => import("../views/VideoView.vue"),
       children: [
         {
-          path: "video/:videoId",
+          path: "",
           name: "video",
-          component: () => import("../views/SeriesView.vue"),
+          component: () => import("../components/VideoPlayer.vue"),
         },
       ],
     },
@@ -36,6 +37,18 @@ const router = createRouter({
     },
   ],
   strict: true,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.params.title && to.params.episode) {
+    let episode = (e) => {
+      if (e.length == 1) return `${to.params.title}[0${e}]`;
+      return `${to.params.title}[${e}]`;
+    };
+    document.title = episode(to.params.episode);
+  }
+  if (to.meta.title) document.title = to.meta.title;
+  next();
 });
 
 export default router;
