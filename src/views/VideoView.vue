@@ -65,13 +65,13 @@ getSeries();
         <router-view></router-view>
       </section>
       <div class="player-description player-title">
-        <h3>{{ VideoTitle }}[{{ VideoEpisode(CurrentEpisode) }}]</h3>
+        <h3>{{ VideoTitle }} [{{ VideoEpisode(CurrentEpisode) }}]</h3>
         <div class="episodes-container">
           <div class="episode-item" v-for="item in seriesData" :key="item.id">
             <RouterLink
               :to="{
                 name: 'video',
-                params: { videoId: item.uuid, title: route.params.title, episode: item.episode},
+                params: { videoId: item.uuid, title: route.params.title, episode: item.episode },
               }">
               {{ VideoEpisode(item.episode) }}
             </RouterLink>
